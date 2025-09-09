@@ -5,11 +5,9 @@ import glob
 import os
 import re
 
-# Создаем папку для графиков, если её нет
 os.makedirs("img", exist_ok=True)
 
-# Загружаем все JSON файлы
-files = glob.glob("stats*.json")
+files = glob.glob("stats.json")
 all_data = []
 for file in files:
     with open(file, "r") as f:
@@ -25,6 +23,7 @@ def extract_size(label):
     return None
 
 df["matrix_size"] = df["label"].apply(extract_size)
+df["real_time"] = df["real_time"] / 1_000_000_000
 
 labels_to_compare = ["BASE_MATRIX", "THREAD_MATRIX"]
 
@@ -34,9 +33,9 @@ for base_label in labels_to_compare:
     group = df[df["label"].str.startswith(base_label)]
     plt.plot(group["matrix_size"], group["real_time"], marker='o', label=base_label, alpha=1)
 
-plt.title("Сравнение real_time по размеру матрицы")
+plt.title("Сравнение времени выполнения по размеру матрицы")
 plt.xlabel("Размер матрицы (n x n)")
-plt.ylabel("Время (нс)")
+plt.ylabel("Время (секунды)")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()

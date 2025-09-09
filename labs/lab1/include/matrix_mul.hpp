@@ -33,7 +33,6 @@ void matrix_mull_perf(const std::vector<std::vector<int>> &A,
   for (auto i = 0U; i < n; ++i) {
     for (auto j = 0U; j < n; ++j) {
       int sum = 0;
-#pragma omp simd reduction(+ : sum)
       for (auto k = 0U; k < n; ++k) {
         sum += A[i][k] * B[k][j];
       }
