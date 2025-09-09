@@ -4,12 +4,21 @@ project(app)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(MPI REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(fmt REQUIRED)
+find_package(benchmark REQUIRED)
+find_package(GTest REQUIRED)
+find_package(Eigen3 REQUIRED NO_MODULE)
 
-add_executable(task1 task1.cpp)
-add_executable(task2 task2.cpp)
 
-target_link_libraries(task1 PRIVATE MPI::MPI_CXX OpenMP::OpenMP_CXX fmt::fmt)
-target_link_libraries(task2 PRIVATE MPI::MPI_CXX OpenMP::OpenMP_CXX fmt::fmt)
+add_executable(${PROJECT_NAME} main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+    OpenMP::OpenMP_CXX
+    fmt::fmt
+    benchmark::benchmark
+    GTest::GTest
+    GTest::Main
+    pthread
+    Eigen3::Eigen
+)
